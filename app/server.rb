@@ -11,7 +11,7 @@ server = TCPServer.new("localhost", 4221)
 
 loop do
   client_socket, client_address = server.accept
-  if request = "/"
+  if request == "/"
     client_socket.puts "HTTP/1.1 200 OK\r\n\r\n"
   else
     client_socket.puts "HTTP/1.1 404 Not Found\r\n\r\n"
