@@ -11,6 +11,7 @@ server = TCPServer.new("localhost", 4221)
 
 loop do
   client_socket, client_address = server.accept
+  request = client.gets
   path, method, version = request.split
   if path = "/"
     client_socket.puts "HTTP/1.1 200 OK\r\n\r\n"
