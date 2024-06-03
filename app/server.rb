@@ -12,10 +12,8 @@ server = TCPServer.new("localhost", 4221)
 loop do
   client_socket, client_address = server.accept
   request = client_socket.gets
-  target, method, version = request.split
-  if target == "/"
-    client_socket.puts "HTTP/1.1 200 OK\r\n\r\n"
-  elsif target == "/index.html"
+  method, path, version = request.split
+  if path == "/"
     client_socket.puts "HTTP/1.1 200 OK\r\n\r\n"
   else
     client_socket.puts "HTTP/1.1 404 Not Found\r\n\r\n"
