@@ -15,6 +15,8 @@ loop do
   path, method, version = request.split
   if path == "/"
     client_socket.puts "HTTP/1.1 200 OK\r\n\r\n"
+  elsif path == "/index.html"
+    client_socket.puts "HTTP/1.1 200 OK\r\n\r\n"
   else
     client_socket.puts "HTTP/1.1 404 Not Found\r\n\r\n"
   end 
