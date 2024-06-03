@@ -14,8 +14,9 @@ loop do
   request = client_socket.gets
 #method, path and version must be in this order
   method, path, version = request.split
-  if path == "/echo/{str}"
-    client_socket.puts "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: 3\r\n\r\n{str}"
+  $body = path
+  if path == "#$body"
+    client_socket.puts "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: 3\r\n\r\n#$body"
   else
     client_socket.puts "HTTP/1.1 404 Not Found\r\n\r\n"
   end 
