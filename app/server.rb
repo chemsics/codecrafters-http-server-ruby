@@ -1,4 +1,5 @@
 require "socket"
+require "useragent"
 
 # You can use print statements as follows for debugging, they'll be visible when running tests.
 print("Logs from your program will appear here!")
@@ -14,11 +15,14 @@ loop do
   request = client_socket.gets
 #method, path and version must be in this order
   method, path, version = request.split
-  $body = path
-  content = path.split('/echo/').last
-  puts content
-  puts $body
-  if path.start_with? '/echo/'
+  if path.start_with? '/user-agent'
+    client_socket.gets
+    client_socket.gets
+    agent = client_socket.gets.split("User-Agent: ").last.strip
+    puts agent
+    client_socket.send "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: #{agent.length}\r\n\r\n#{agent}", 0
+  elsif path.start_with? '/echo/'
+    content = path.split('/echo/').last
     client_socket.send "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: #{content.length}\r\n\r\n#{content}", 0
   elsif path == '/'
     client_socket.send "HTTP/1.1 200 OK\r\n\r\n", 0
