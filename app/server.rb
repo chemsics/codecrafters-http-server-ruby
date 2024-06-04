@@ -15,7 +15,8 @@ loop do
 #method, path and version must be in this order
   method, path, version = request.split
   $body = path
-  $length = "#$body".length
+  $body = "/echo/#$bod"
+  $length = "#$bod".length
   if path == "#$body"
     client_socket.puts "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: #$length\r\n\r\n#$body"
   else
