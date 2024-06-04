@@ -13,7 +13,7 @@ loop do
   client_socket, client_address = server.accept
   request = client_socket.gets
 #method, path and version must be in this order
-  method, path, version = request.split
+  method, path, version, type, length = request.split
   $body = path
   if path == "#$body"
     client_socket.puts "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: 3\r\n\r\n#$body"
