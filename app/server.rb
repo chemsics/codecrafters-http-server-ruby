@@ -16,8 +16,9 @@ loop do
   method, path, version = request.split
   $body = path
   $length = "#$body".length - 6
+  $body_split = "#$body".split('/echo/',-1)
   if path == "#$body"
-    client_socket.puts "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: #$length\r\n\r\n#$body"
+    client_socket.puts "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: #$length\r\n\r\n#$body_split"
   else
     client_socket.puts "HTTP/1.1 404 Not Found\r\n\r\n"
   end 
