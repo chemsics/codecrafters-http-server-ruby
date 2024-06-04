@@ -20,7 +20,7 @@ loop do
   puts $body_split
   puts $body
   if path == "#$body"
-    client_socket.puts "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: #$length\r\n\r\n#$body_split"
+    client_socket.puts "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: $length\r\n\r\n$body_split"
   else
     client_socket.puts "HTTP/1.1 404 Not Found\r\n\r\n"
   end 
