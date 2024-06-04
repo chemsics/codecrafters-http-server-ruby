@@ -15,12 +15,12 @@ loop do
 #method, path and version must be in this order
   method, path, version = request.split
   $body = path
-  $length = "#$body".length - 6
-  $bod = "#$body".split('/echo/',-1)
+  length = "#$body".length - 6
+  bod = "#$body".split('/echo/',-1)
   puts $bod
   puts $body
   if path == "#$body"
-    client_socket.puts "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: #$length\r\n\r\n#$bod"
+    client_socket.puts "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: #{length}\r\n\r\n#{bod}"
   else
     client_socket.puts "HTTP/1.1 404 Not Found\r\n\r\n"
   end 
