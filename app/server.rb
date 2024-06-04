@@ -21,7 +21,7 @@ loop do
   if path.start_with? '/echo/'
     client_socket.send "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: #{content.length}\r\n\r\n#{content}", 0
   elsif path.start_with? '/'
-    client_socket.send "HTTP/1.1 200 OK\r\n\r\n"
+    client_socket.send "HTTP/1.1 200 OK\r\n\r\n", 0
   else
     client_socket.puts "HTTP/1.1 404 Not Found\r\n\r\n"
   end 
