@@ -15,7 +15,7 @@ loop do
 #method, path and version must be in this order
   method, path, version = request.split
   if path.start_with? '/user-agent'
-    client_socket.gets
+#    client_socket.gets
     client_socket.gets
     agent = client_socket.gets.split("User-Agent: ").last.strip
     puts agent
