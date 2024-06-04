@@ -17,7 +17,7 @@ loop do
   $body = path
   length = "#$body".length - 6
   bod = "#$body".split('/echo/',-1)
-  puts $bod
+  puts #{bod}
   puts $body
   if path == "#$body"
     client_socket.puts "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: #{length}\r\n\r\n#{bod}"
