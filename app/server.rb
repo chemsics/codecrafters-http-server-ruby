@@ -15,12 +15,11 @@ loop do
 #method, path and version must be in this order
   method, path, version = request.split
   $body = path
-  length = "#$body".length - 6
-  bod = "#$body".split('/echo/',-1)
-  puts bod
+  content = path.split('/echo/').last
+  puts content
   puts $body
-  if path == "#$body"
-    client_socket.puts "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: #{length}\r\n\r\n#{bod}"
+  if path.start_with? '/echo/'
+    client_socket.send "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: #{content.length}\r\n\r\n#{content}", 0
   else
     client_socket.puts "HTTP/1.1 404 Not Found\r\n\r\n"
   end 
