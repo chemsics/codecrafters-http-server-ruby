@@ -27,16 +27,16 @@ loop do
       client_socket.send "HTTP/1.1 200 OK\r\n\r\n", 0
 
     elsif path.start_with? '/files/' 
-      directory = ARGV[1] 
-      filename = path.split('/files/').last
-      begin
-        content = File.read "#{directory}#{filename}"
-        client_socket.send "HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: #{content.length}\r\n\r\n#{content}",
-                           0
-      rescue Errno::ENOENT
-        client_socket.send "HTTP/1.1 404 Not Found\r\n\r\n", 0
-      end
-
+      directory = ARGV[1]
+      filename = path.split('/').last.strip
+      full_path = "#{directory}/#{filename}"
+      if File.exist?(full_path)
+        file = File.open(full_path, "r")
+        file_content = file.read
+        client.puts("HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: #{file_content.length}\r\n\r\n#{file_content}")
+      else
+        client.puts("HTTP/1.1 404 Not Found\r\n\r\n")
+      end    
     else
       client_socket.puts "HTTP/1.1 404 Not Found\r\n\r\n"
 
