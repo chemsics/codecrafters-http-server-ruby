@@ -33,14 +33,24 @@ loop do
         file = File.open(full_path, "r")
         file_content = file.read
         client_socket.puts("HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: #{file_content.length}\r\n\r\n#{file_content}")
+
       else
         client_socket.puts("HTTP/1.1 404 Not Found\r\n\r\n")
       end    
+
+    elsif method == 'POST'
+       directory = ARGV[1]
+       filename = path.split('/').last.strip
+       full_path = "#{directory}/#{filename}"
+       file = File.new(filename, "w+").path
+       file_content = file.read
+       client_socket.puts("HTTP/1.1 201 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: #{file_content.length}\r\n\r\n#{file_content}")
+
     else
       client_socket.puts "HTTP/1.1 404 Not Found\r\n\r\n"
 
     end 
-    client.close
+    client_socket.close
 
   end
 
