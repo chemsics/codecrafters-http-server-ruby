@@ -32,9 +32,9 @@ loop do
       if File.exist?(full_path)
         file = File.open(full_path, "r")
         file_content = file.read
-        client.puts("HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: #{file_content.length}\r\n\r\n#{file_content}")
+        client_socket.puts("HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: #{file_content.length}\r\n\r\n#{file_content}")
       else
-        client.puts("HTTP/1.1 404 Not Found\r\n\r\n")
+        client_socket.puts("HTTP/1.1 404 Not Found\r\n\r\n")
       end    
     else
       client_socket.puts "HTTP/1.1 404 Not Found\r\n\r\n"
