@@ -11,7 +11,6 @@ loop do
     Thread.start(server.accept) do |client_socket|
     request = client_socket.gets
     method, path, version = request.split
-    socket = server.accept
 
     if path.start_with? '/user-agent'
       client_socket.gets
@@ -26,7 +25,7 @@ loop do
     elsif path == '/'
       client_socket.send "HTTP/1.1 200 OK\r\n\r\n", 0
 
-    elsif path.start_with? '/files/' 
+    elsif path.start_with? '/files' 
       directory = ARGV[1]
       filename = path.split('/').last.strip
       full_path = "#{directory}/#{filename}"
