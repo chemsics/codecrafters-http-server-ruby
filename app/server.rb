@@ -56,7 +56,7 @@ loop do
       File.open(full_path, "w") do |file|
         file.write(body)
       end
-      client_socket.puts("HTTP/1.1 201 OK\r\n\r\n")
+      client_socket.puts("HTTP/1.1 201 Created\r\n\r\n")
 
     else
       client_socket.puts "HTTP/1.1 404 Not Found\r\n\r\n"
