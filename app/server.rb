@@ -10,7 +10,7 @@ loop do
 
     Thread.start(server.accept) do |client_socket|
     request = client_socket.gets
-    method, path, version = request.split
+    method, path, version = request.split(" ")
 
     if path.start_with? '/user-agent'
       client_socket.gets
@@ -25,26 +25,38 @@ loop do
     elsif path == '/'
       client_socket.send "HTTP/1.1 200 OK\r\n\r\n", 0
 
-    elsif path.start_with? '/files' 
+    elsif method == 'GET' 
+        directory = ARGV[1]
+        filename = path.split('/').last.strip
+        full_path = "#{directory}/#{filename}"
+        if File.exist?(full_path)
+          file = File.open(full_path, "r")
+          file_content = file.read
+          client_socket.puts("HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: #{file_content.length}\r\n\r\n#{file_content}")
+
+        else
+          client_socket.puts("HTTP/1.1 404 Not Found\r\n\r\n")
+        end    
+
+    elsif method == 'POST'
+       headers = {}
+             while line = client_socket.gets
+        break if line == "\r\n"
+        
+        parts = line.split(': ', 2)
+        if parts.length == 2
+          headers[parts[0]] = parts[1].strip
+        end
+      end
+      content_length = headers["Content-Length"].to_i
+      body = client_socket.read(content_length)
       directory = ARGV[1]
       filename = path.split('/').last.strip
       full_path = "#{directory}/#{filename}"
-      if File.exist?(full_path)
-        file = File.open(full_path, "r")
-        file_content = file.read
-        client_socket.puts("HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: #{file_content.length}\r\n\r\n#{file_content}")
-
-      else
-        client_socket.puts("HTTP/1.1 404 Not Found\r\n\r\n")
-      end    
-
-    elsif method == 'POST'
-       directory = ARGV[1]
-       filename = path.split('/').last.strip
-       full_path = "#{directory}/#{filename}"
-       file = File.new(filename, "w+").path
-       file_content = file.read
-       client_socket.puts("HTTP/1.1 201 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: #{file_content.length}\r\n\r\n#{file_content}")
+      File.open(full_path, "w") do |file|
+        file.write(body)
+      end
+      client_socket.puts("HTTP/1.1 201 OK\r\n\r\n")
 
     else
       client_socket.puts "HTTP/1.1 404 Not Found\r\n\r\n"
