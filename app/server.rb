@@ -1,4 +1,7 @@
 require "socket"
+require 'zlib'
+require 'stringio'
+
 
 print("Logs from your program will appear here!")
 
@@ -25,8 +28,16 @@ loop do
     elsif path.start_with? '/echo/'
      if headers.include?('Accept-Encoding')
       if headers['Accept-Encoding'].match(/.*gzip.*/)
+        def enconding_string(value)
+          buffer = StringIO.new
+          gzip_writer = Zlib::GzipWriter.new(buffer)
+          gzip_writer.write(value)
+          gzip_writer.close
+          buffer.string
+        end
         content = path.split('/echo/').last
-        client_socket.send "HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: #{content.length}\r\n\r\n#{content}", 0
+        compressed_data = enconding_string(content)
+        client_socket.send "HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: #{compressed_data.size}\r\n\r\n#{compressed_data}", 0
       else 
         content = path.split('/echo/').last
         client_socket.send "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: #{content.length}\r\n\r\n#{content}", 0
