@@ -23,7 +23,7 @@ loop do
       client_socket.send "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: #{agent.length}\r\n\r\n#{agent}", 0
 
     elsif path.start_with? '/echo/'
-      if headers['Accept-Encoding'] == 'gzip'
+      if headers['Accept-Encoding'].match(/.*gzip.*/)
         content = path.split('/echo/').last
         client_socket.send "HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: #{content.length}\r\n\r\n#{content}", 0
       else 
