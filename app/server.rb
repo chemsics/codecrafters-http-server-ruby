@@ -18,8 +18,7 @@ loop do
     end
 
     if path.start_with? '/user-agent'
-      client_socket.gets
-      agent = client_socket.gets.split("User-Agent: ").last.strip
+      agent = headers['User-Agent']
       puts agent
       client_socket.send "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: #{agent.length}\r\n\r\n#{agent}", 0
 
