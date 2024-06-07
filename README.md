@@ -1,38 +1,7 @@
-[![progress-banner](https://backend.codecrafters.io/progress/http-server/bb2de75a-19ee-47f3-86fd-0ed0e57d3d7d)](https://app.codecrafters.io/users/codecrafters-bot?r=2qF)
+My attempt at the CodeCrafters Ruby HTTP Server project.
 
-This is a starting point for Ruby solutions to the
-["Build Your Own HTTP server" Challenge](https://app.codecrafters.io/courses/http-server/overview).
+TODO
 
-[HTTP](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol) is the
-protocol that powers the web. In this challenge, you'll build a HTTP/1.1 server
-that is capable of serving multiple clients.
+Streamline the code
 
-Along the way you'll learn about TCP servers,
-[HTTP request syntax](https://www.w3.org/Protocols/rfc2616/rfc2616-sec5.html),
-and more.
-
-**Note**: If you're viewing this repo on GitHub, head over to
-[codecrafters.io](https://codecrafters.io) to try the challenge.
-
-# Passing the first stage
-
-The entry point for your HTTP server implementation is in `app/server.rb`. Study
-and uncomment the relevant code, and push your changes to pass the first stage:
-
-```sh
-git add .
-git commit -m "pass 1st stage" # any msg
-git push origin master
-```
-
-Time to move on to the next stage!
-
-# Stage 2 & beyond
-
-Note: This section is for stages 2 and beyond.
-
-1. Ensure you have `ruby (3.3)` installed locally
-1. Run `./your_server.sh` to run your program, which is implemented in
-   `app/server.rb`.
-1. Commit your changes and run `git push origin master` to submit your solution
-   to CodeCrafters. Test output will be streamed to your terminal.
+Add additional features to create a more functional HTTP server
