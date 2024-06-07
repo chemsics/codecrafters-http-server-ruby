@@ -12,6 +12,10 @@ loop do
     request = client_socket.gets
     method, path, version = request.split(" ")
     headers = {}
+    while line = client_socket.gets.split(' ', 2)
+      break if line[0] == ""
+      headers[line[0].chop] = line[1].strip
+    end
 
     if path.start_with? '/user-agent'
       client_socket.gets
@@ -20,11 +24,7 @@ loop do
       client_socket.send "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: #{agent.length}\r\n\r\n#{agent}", 0
 
     elsif path.start_with? '/echo/'
-      client_socket.gets
-      client_socket.gets
-      client_socket.gets
-      encode = client_socket.gets.split("Accept-Encoding: ").last.strip
-      if encode == "gzip"
+      if headers['Accept-Encoding'] == 'gzip'
         content = path.split('/echo/').last
         client_socket.send "HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: #{content.length}\r\n\r\n#{content}", 0
       else 
