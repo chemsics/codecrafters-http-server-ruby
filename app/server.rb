@@ -19,9 +19,16 @@ loop do
       client_socket.send "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: #{agent.length}\r\n\r\n#{agent}", 0
 
     elsif path.start_with? '/echo/'
-      content = path.split('/echo/').last
-      client_socket.send "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: #{content.length}\r\n\r\n#{content}", 0
-
+      client_socket.gets
+      client_socket.gets
+      encode = client_socket.gets.split("Accept-Encoding: ").last.strip
+      if encode == "gzip"
+        content = path.split('/echo/').last
+        client_socket.send "HTTP/1.1 200 OK\r\nContent-Encoding: #{encode}\r\nContent-Type: text/plain\r\nContent-Length: #{content.length}\r\n\r\n#{content}", 0
+      else 
+        content = path.split('/echo/').last
+        client_socket.send "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: #{content.length}\r\n\r\n#{content}", 0
+      
     elsif path == '/'
       client_socket.send "HTTP/1.1 200 OK\r\n\r\n", 0
 
@@ -57,6 +64,8 @@ loop do
         file.write(body)
       end
       client_socket.puts("HTTP/1.1 201 Created\r\n\r\n")
+
+
 
     else
       client_socket.puts "HTTP/1.1 404 Not Found\r\n\r\n"
