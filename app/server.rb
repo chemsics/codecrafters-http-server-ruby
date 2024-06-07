@@ -11,6 +11,7 @@ loop do
     Thread.start(server.accept) do |client_socket|
     request = client_socket.gets
     method, path, version = request.split(" ")
+    headers = {}
 
     if path.start_with? '/user-agent'
       client_socket.gets
@@ -25,7 +26,7 @@ loop do
       encode = client_socket.gets.split("Accept-Encoding: ").last.strip
       if encode == "gzip"
         content = path.split('/echo/').last
-        client_socket.send "HTTP/1.1 200 OK\r\nContent-Encoding: #{encode}\r\nContent-Type: text/plain\r\nContent-Length: #{content.length}\r\n\r\n#{content}", 0
+        client_socket.send "HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: #{content.length}\r\n\r\n#{content}", 0
       else 
         content = path.split('/echo/').last
         client_socket.send "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: #{content.length}\r\n\r\n#{content}", 0
