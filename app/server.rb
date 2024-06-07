@@ -23,7 +23,6 @@ loop do
       client_socket.gets
       client_socket.gets
       encode = client_socket.gets.split("Accept-Encoding: ").last.strip
-      puts encode
       if encode == "gzip"
         content = path.split('/echo/').last
         client_socket.send "HTTP/1.1 200 OK\r\nContent-Encoding: #{encode}\r\nContent-Type: text/plain\r\nContent-Length: #{content.length}\r\n\r\n#{content}", 0
