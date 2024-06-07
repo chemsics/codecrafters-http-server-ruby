@@ -49,15 +49,6 @@ loop do
         end    
 
     elsif method == 'POST'
-       headers = {}
-             while line = client_socket.gets
-        break if line == "\r\n"
-        
-        parts = line.split(': ', 2)
-        if parts.length == 2
-          headers[parts[0]] = parts[1].strip
-        end
-      end
       content_length = headers["Content-Length"].to_i
       body = client_socket.read(content_length)
       directory = ARGV[1]
