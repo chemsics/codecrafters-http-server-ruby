@@ -28,6 +28,7 @@ loop do
       else 
         content = path.split('/echo/').last
         client_socket.send "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: #{content.length}\r\n\r\n#{content}", 0
+      end
       
     elsif path == '/'
       client_socket.send "HTTP/1.1 200 OK\r\n\r\n", 0
